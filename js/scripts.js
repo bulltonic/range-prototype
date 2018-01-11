@@ -18,7 +18,25 @@ $(document).ready(function(){
 	//   document.body.insertBefore(div, document.body.childNodes[0]);
 	// });
 
-	$('input[type="range"]').rangeslider({
+	var $document = $(document);
+	var selector = '[data-rangeslider]';
+	var $element = $(selector);
+
+	// For ie8 support
+	var textContent = ('textContent' in document) ? 'textContent' : 'innerText';
+
+	// Example functionality to demonstrate a value feedback
+	function valueOutput(element) {
+	var value = element.value;
+	var output = element.parentNode.getElementsByTagName('output')[0] || element.parentNode.parentNode.getElementsByTagName('output')[0];
+	output[textContent] = value;
+	}
+
+	$document.on('input', 'input[type="range"], ' + selector, function(e) {
+		// valueOutput(e.target);
+	});
+
+	$element.rangeslider({
 
 	    // Feature detection the default is `true`.
 	    // Set this to `false` if you want to use
