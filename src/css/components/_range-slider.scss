@@ -1,0 +1,318 @@
+/*==============================================================
+# Range Slider
+==============================================================*/
+
+.range-input-content-wrapper {
+	position: relative;
+}
+.rating-component {
+	width: 100%;
+	position: relative;
+	height: 100%;
+}
+.range-input-content-wrapper {
+	float: left;
+}
+.energy-rating-section {
+	background: $grayLight;
+}
+
+.rangeslider,
+.rangeslider__fill {
+  display: block;
+  border-radius: 100px;
+}
+
+.rangeslider {
+  background: #e6e6e6;
+  background-image: linear-gradient(to bottom, #ee3624, #edb220, #aeca37);
+  position: relative;
+}
+
+.rangeslider--horizontal {
+  height: 20px;
+  width: 100%;
+}
+
+.rangeslider--vertical {
+	width: 80px;
+	min-height: 600px;
+	max-height: 100%;
+	padding: 10px;
+	display: inline-block;
+	position: relative;
+	box-shadow: 0 0 0 5px white;
+	&:before,
+	&:after {
+		display: inline-block;
+		position: absolute;
+		width: 100%;
+		padding: 10px;
+		text-align: center;
+		z-index: 1;
+		left: 50%;
+		text-transform: uppercase;
+		font-size: .85em;
+		font-weight: bold;
+		color: $white;
+	}
+	&:before {
+		content: "Pay More";
+		top: 10px;
+		transform: translateX(-50%);
+	}
+	&:after {
+		content: "Save More";
+		bottom: 10px;
+		transform: translateX(-50%);
+	}
+}
+
+.rangeslider--disabled {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+
+.rangeslider__fill {
+  position: absolute;
+}
+.rangeslider--horizontal .rangeslider__fill {
+  top: 0;
+  height: 100%;
+}
+.rangeslider--vertical .rangeslider__fill {
+  bottom: 0;
+  width: 100%;
+}
+.rangeslider__handle {
+	background: white;
+	cursor: pointer;
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+	position: absolute;
+	background: transparent;
+	border-radius: 50%;
+	z-index: 5;
+	&:after {
+	  content: "";
+	  display: block;
+	  width: 55px;
+	  height: 55px;
+	  margin: auto;
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+	  left: 0;
+	  background: #5c5b5b;
+	  border: 1px solid $white;
+	  background-size: 100%;
+	  border-radius: 50%;
+	}
+  	&:before {
+		position: absolute;
+		content: attr(data-value);
+		color: white;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 10;
+	}
+	.arrows {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		&:after,
+		&:before {
+		  content: "";
+		  display: block;
+		  position: absolute;
+		  left: 50%;
+		  height: 20px;
+		  width: 20px;
+		  border-left: 1px solid white;
+		  border-top: 1px solid white;
+		}
+		&:before {
+			top: -20px;
+			transform: translateX(-50%) rotate(45deg);
+		}
+		&:after {
+			bottom: -20px;
+			transform: translateX(-50%) rotate(225deg);
+		}
+	}
+}
+.rangeslider__handle:active, .rangeslider--active .rangeslider__handle {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.12));
+}
+.rangeslider--horizontal .rangeslider__handle {
+  top: 50%;
+  touch-action: pan-y;
+  -ms-touch-action: pan-y;
+  transform: translateY(-50%);
+}
+.rangeslider--vertical .rangeslider__handle {
+  left: 50%;
+  touch-action: pan-x;
+  -ms-touch-action: pan-x;
+  transform: translateX(-50%);
+}
+
+input[type="range"]:focus + .rangeslider .rangeslider__handle {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+}
+
+.range-plot-wrapper {
+	position: relative;
+	width: 200px;
+ 	height: 600px;
+    padding: 60px 10px;
+	float: left;
+	text-align: right;
+	ul {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		li {
+			position: relative;
+			&:before {
+				position: absolute;
+				content: attr(data-detail-content);
+				color: black;
+				bottom: 40%;
+				right: 40%;
+				z-index: 10;
+				width: 175px;
+				font-size: .85em;
+				z-index: 10;
+			}
+			&.detail-group-top {
+				&:before {
+					top: 50%;
+				}
+			}
+			&:after {
+				content: "";
+				position: absolute;
+				width: 80px;
+				height: 1px;
+				background: white;
+				display: block;
+				right: -90px;
+				z-index: 1;
+				top: 50%;
+			}
+			&.details {
+				span {
+					min-width: 35px;
+	    			display: inline-block;
+	    			position: relative;
+	    			&:before {
+						content: "";
+						position: absolute;
+						right: 115%;
+						top: 50%;
+						background: black;
+						z-index: 1;
+						display: block;
+						height: 1px;
+						width: 20px;
+					}
+				}
+			}
+			&.detail-group {
+				span {
+					&:before {
+						content: "";
+						position: absolute;
+						right: 115%;
+						top: 50%;
+						background: black;
+						z-index: 1;
+						display: block;
+						height: 1px;
+						width: 10px;
+					}
+				}
+			}
+			&.detail-group-top {
+				span {
+					&:after {
+						content: "";
+						height: calc(150% - 1px);
+						width: 1px;
+						display: block;
+						position: absolute;
+						background: black;
+						top: 50%;
+						right: calc(115% + 10px);
+					}
+				}
+			}
+			&.detail-group-bottom {
+				span {
+					&:after {
+						content: "";
+						height: 1px;
+						width: 10px;
+						display: block;
+						position: absolute;
+						background: black;
+						top: -25%;
+						right: calc(115% + 10px);
+					}
+				}
+			}
+		}
+	}
+}
+
+.range-content {
+	opacity: 0;
+	width: 700px;
+	position: absolute;
+	left: 150px;
+	top: 50%;
+	transform: translate(5%, -50%);
+	background: white;
+	border: 1px solid $grayLight;
+	padding: 20px;
+	transition: .3s $cbTrans all;
+	&.active {
+		opacity: 1;
+		transform: translate(0%, -50%);
+		&.disabled {
+			/*opacity: .8;*/
+		}
+	}
+	&:after {
+		content: "";
+		display: inline-block;
+		border-top: 0px solid $white;
+		border-left: 30px solid $white;
+		border-bottom: 30px solid transparent;
+		box-shadow: -1px -1px 0 1px $grayLight;
+		position: absolute;
+		left: -15px;
+		top: 50%;
+		transform: translateY(-50%) rotate(-45deg);
+	}
+}
+
+.savings {
+	float: left;
+	width: 100%;
+	border: 1px solid $grayLight;
+	padding: 5px;
+	.home-value {
+		display: block;
+		float: left;
+		width: 50%;
+	}
+}
