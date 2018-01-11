@@ -24,7 +24,7 @@ $(document).ready(function(){
 	    // Set this to `false` if you want to use
 	    // the polyfill also in Browsers which support
 	    // the native <input type="range"> element.
-	    polyfill: false,
+	    polyfill: true,
 
 	    // Default CSS classes
 	    rangeClass: 'rangeslider',
