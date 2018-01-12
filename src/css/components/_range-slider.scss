@@ -24,8 +24,9 @@
 }
 
 .rangeslider {
-  background: #e6e6e6;
+  background-color: #e6e6e6;
   background-image: linear-gradient(to bottom, #ee3624, #edb220, #aeca37);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ee3624', endColorstr='#aeca37',GradientType=0 ); 
   position: relative;
 }
 
@@ -181,6 +182,7 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
 		justify-content: space-around;
 		li {
 			position: relative;
+			padding: 5px 0;
 			&:before {
 				position: absolute;
 				content: attr(data-detail-content);
