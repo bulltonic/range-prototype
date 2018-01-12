@@ -27,9 +27,9 @@ $(document).ready(function(){
 
 	// Example functionality to demonstrate a value feedback
 	function valueOutput(element) {
-	var value = element.value;
-	var output = element.parentNode.getElementsByTagName('output')[0] || element.parentNode.parentNode.getElementsByTagName('output')[0];
-	output[textContent] = value;
+		var value = element.value;
+		//var output = element.parentNode.getElementsByTagName('output')[0] || element.parentNode.parentNode.getElementsByTagName('output')[0];
+		//output[textContent] = value;
 	}
 
 	$document.on('input', 'input[type="range"], ' + selector, function(e) {
@@ -53,7 +53,7 @@ $(document).ready(function(){
 	    handleClass: 'rangeslider__handle',
 
 	    // Callback function
-	    onInit: function() {
+	    onInit: function() {	
 
 	    	$('.rangeslider__handle').attr('data-value', '70').append('<span class="arrows"></span>');
 
@@ -62,8 +62,10 @@ $(document).ready(function(){
 	    		$this = $(this);
 
 	    		if ( ( 70 > $this.data('value-min') ) && ( 70 < $this.data('value-max')) ) {
-		    		$('.range-content').removeClass('active');
+		    		
+		    		// $('.range-content').removeClass('active');
 		    		$this.addClass('active');
+
 		    	} else {
 		    		
 		    	}
@@ -75,79 +77,135 @@ $(document).ready(function(){
 	    // Callback function
 	    onSlide: function(position, value) {
 	    	
+	    	// Current active range
+	    	$currentRange = this.$element;
+
+	    	// Current active ranges value
+	    	$currentRangeValue = this.value;
+
+	    	// Value containers
+	    	$newHomeValueContainer = $currentRange.closest('.range-input-content-wrapper').find($('.range-content .built-home .value-amount'));
+	    	$oldHomeValueContainer = $currentRange.closest('.range-input-content-wrapper').find($('.range-content .old-home .value-amount'));
+	    	$ratingContainer = $currentRange.closest('.range-input-content-wrapper').find($('.range-content .value'));
 	    	// Updates the value within the range inner circle
-	    	$('.rangeslider__handle').attr('data-value', value);
+	    	this.$element.next('.rangeslider').find('.rangeslider__handle').attr('data-value', value);
 
 	    	// Updates the value within the header in the range content div
-	    	$('.range-content .value').text(value);
+	    	$ratingContainer.text(value);
+
+	    	// Disables/enables the text and the ends of the ranges
+	    	if ( $currentRangeValue < 10) {
+
+	    		this.$element.next('.rangeslider').addClass('disable-begin-status');
+
+	    	} else {
+				
+				this.$element.next('.rangeslider').removeClass('disable-begin-status');
+
+
+	    	}
+	    	if ( $currentRangeValue > 140) {
+
+	    		this.$element.next('.rangeslider').addClass('disable-end-status');
+
+	    	} else {
+				
+				this.$element.next('.rangeslider').removeClass('disable-end-status');
+
+
+	    	}
 
 	    	// Calculates and updates the values of savings within the range content div if
 	    	// the value/score is "better then" 100. The lower the "score" the better
 			
-	    	if (value < 100) {
+	    	if ( $currentRangeValue < 100) {
 
+
+	    		// New home value
 	    		var $newHomeCost = 2335,
 	    			$newHomeScore = value*17.73247,
 	    			$newHomeValue = $newHomeCost - $newHomeScore,
 	    			$newHomeValue = '$' + $newHomeValue.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 
-	    			$('.range-content .built-home .value-amount').text($newHomeValue);
+	    			$newHomeValueContainer.text($newHomeValue);
 	    			
 
-	    			$('.range-content .old-home .value-amount').text('$0');
+	    			$oldHomeValueContainer.text('$0');
 
 	    	} else {
 
+	    		// Old home value
 	    		var $oldHomeCost = 125,
 	    			$oldHomeScore = value*7.73247,
 	    			$oldHomeValue = $oldHomeCost - $oldHomeScore,
 	    			$oldHomeValue = '$' + $oldHomeValue.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 
-	    		$('.range-content .built-home .value-amount').text('$0');
+	    		$newHomeValueContainer.text('$0');
 
-	    		$('.range-content .old-home .value-amount').text($oldHomeValue);
+	    		$oldHomeValueContainer.text($oldHomeValue);
 
 	    	}
 
+    		$currentRange.closest('.range-input-content-wrapper').find($('.range-content')).removeClass('active');
+
 	    	$('.range-content').each(function(e){
 
-	    		$this = $(this);
+	    		$rangeContent = $(this);
 
-	    		if ( ( value > $this.data('value-min') ) && ( value < $this.data('value-max')) ) {
-		    		$('.range-content').removeClass('active');
-		    		$this.addClass('active');
+	    		if ( ( $currentRangeValue > $rangeContent.data('value-min') ) && ( $currentRangeValue < $rangeContent.data('value-max')) ) {
+	    				
+		    		$currentRange.closest('.range-input-content-wrapper').find($rangeContent).addClass('active');
+
 		    	} 
 
-	    		if ( ( value < $this.data('value-min') ) || ( value > $this.data('value-max')) ) {
-		    		
-		    		if( $this.hasClass('active') ) {
-		    			$this.addClass('disabled');
-		    		} 
+	    	});
 
-		    	} else {
-	    			$('.range-content').removeClass('disabled');
+    		if ( ( $currentRangeValue < $this.data('value-min') ) || ( $currentRangeValue > $this.data('value-max')) ) {
+	    		
+	    		if( $this.hasClass('active') ) {
+
+	    			$this.addClass('disabled');
+
 	    		} 
 
-	    	});
+	    	}
 
 	    },
 
 	    // Callback function
 	    onSlideEnd: function(position, value) {
-	    	
+
+	    	// Current active range
+	    	$currentRange = this.$element;
+
+	    	// Current active ranges value
+	    	$currentRangeValue = this.value;
+
+    		$currentRange.closest('.range-input-content-wrapper').find($('.range-content')).removeClass('active');
+
 	    	$('.range-content').each(function(e){
 
-	    		$this = $(this);
+	    		$rangeContent = $(this)
 
-	    		if ( ( value > $this.data('value-min') ) && ( value < $this.data('value-max')) ) {
-		    		$('.range-content').removeClass('active');
-		    		$this.addClass('active');
+	    		if ( ( $currentRangeValue > $rangeContent.data('value-min') ) && ( $currentRangeValue < $rangeContent.data('value-max')) ) {
+	    				
+		    		$currentRange.closest('.range-input-content-wrapper').find($rangeContent).addClass('active');
+
 		    	} 
 
 	    	});
+
+    		if ( ( $currentRangeValue < $this.data('value-min') ) || ( $currentRangeValue > $this.data('value-max')) ) {
+	    		
+	    		if( $this.hasClass('active') ) {
+
+	    			$this.addClass('disabled');
+
+	    		} 
+
+	    	}
 	    }
+
 	});
 
-	
-
-})
+});
