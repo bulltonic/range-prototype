@@ -21,6 +21,9 @@
 .rangeslider__fill {
   display: block;
   border-radius: 100px;
+  .no-flexbox & {
+  	border-radius: 0px;
+  }
 }
 
 .rangeslider {
