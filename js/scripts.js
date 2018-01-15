@@ -18,6 +18,10 @@ $(document).ready(function(){
 	//   document.body.insertBefore(div, document.body.childNodes[0]);
 	// });
 
+	// ==============================================================*/
+	// Range slider configurations
+	// ==============================================================*/
+
 	var $document = $(document);
 	var selector = '[data-rangeslider]';
 	var $element = $(selector);
@@ -87,6 +91,7 @@ $(document).ready(function(){
 	    	$newHomeValueContainer = $currentRange.closest('.range-input-content-wrapper').find($('.range-content .built-home .value-amount'));
 	    	$oldHomeValueContainer = $currentRange.closest('.range-input-content-wrapper').find($('.range-content .old-home .value-amount'));
 	    	$ratingContainer = $currentRange.closest('.range-input-content-wrapper').find($('.range-content .value'));
+	    	
 	    	// Updates the value within the range inner circle
 	    	this.$element.next('.rangeslider').find('.rangeslider__handle').attr('data-value', value);
 
@@ -148,6 +153,16 @@ $(document).ready(function(){
 
     		$currentRange.closest('.range-input-content-wrapper').find($('.range-content')).removeClass('active');
 
+    		// Reset charts to 100% or 0%
+    		$currentRange.closest('.range-input-content-wrapper').find($('.range-content .pie')).each(function(pie) {
+				
+				$this = $(this);
+
+				$this.find('circle').attr("stroke-dasharray", "100 100");
+
+			});
+
+
 	    	$('.range-content').each(function(e){
 
 	    		$rangeContent = $(this);
@@ -156,19 +171,25 @@ $(document).ready(function(){
 	    				
 		    		$currentRange.closest('.range-input-content-wrapper').find($rangeContent).addClass('active');
 
+
+
+		    		// Change chart value to animate to value on .pie element
+		    		$currentRange.closest('.range-input-content-wrapper').find('.pie').each(function(pie) {
+						
+						$this = $(this);
+						
+						var value = $this.data('chart-value');
+					
+						$circle = $this.find('circle');
+
+						$this.find('circle').attr("stroke-dasharray", value + " 100");
+
+					});
+
 		    	} 
 
 	    	});
 
-    		if ( ( $currentRangeValue < $this.data('value-min') ) || ( $currentRangeValue > $this.data('value-max')) ) {
-	    		
-	    		if( $this.hasClass('active') ) {
-
-	    			$this.addClass('disabled');
-
-	    		} 
-
-	    	}
 
 	    },
 
@@ -183,6 +204,15 @@ $(document).ready(function(){
 
     		$currentRange.closest('.range-input-content-wrapper').find($('.range-content')).removeClass('active');
 
+    		// Reset charts to 100% or 0%
+    		$currentRange.closest('.range-input-content-wrapper').find($('.range-content .pie')).each(function(pie) {
+				
+				$this = $(this);	
+
+				$this.find('circle').attr("stroke-dasharray", "100 100");
+
+			});
+
 	    	$('.range-content').each(function(e){
 
 	    		$rangeContent = $(this)
@@ -190,6 +220,17 @@ $(document).ready(function(){
 	    		if ( ( $currentRangeValue > $rangeContent.data('value-min') ) && ( $currentRangeValue < $rangeContent.data('value-max')) ) {
 	    				
 		    		$currentRange.closest('.range-input-content-wrapper').find($rangeContent).addClass('active');
+
+		    		// Change chart value to animate to value on .pie element
+		    		$currentRange.closest('.range-input-content-wrapper').find($('.range-content .pie')).each(function(pie) {
+						
+						$this = $(this);
+						var value = $this.data('chart-value');
+					
+						$circle = $this.find('circle');
+						$this.find('circle').attr("stroke-dasharray", value + " 100");
+
+					});
 
 		    	} 
 
@@ -206,6 +247,36 @@ $(document).ready(function(){
 	    	}
 	    }
 
+	});
+
+	// ==============================================================*/
+	// Pie chart generation
+	// ==============================================================*/
+
+
+	function createSvgEl(tag) {
+	    return document.createElementNS('http://www.w3.org/2000/svg', tag);
+	}
+
+
+	$('.pie').each(function(pie) {
+		$this = $(this);
+		var value = $this.data('chart-value');
+		var svg = createSvgEl('svg');
+		var circle = createSvgEl('circle');
+		var title = createSvgEl('title');
+		circle.setAttribute("r", "16");
+		circle.setAttribute("cx", "16");
+		circle.setAttribute("cy", "16");
+		circle.setAttribute("stroke-dasharray", "100 100");
+		svg.setAttribute("viewBox", "0 0 32 32");
+		// title.text(p);
+		svg.append(title);
+		svg.append(circle);
+		$this.append(svg);
+		setTimeout(function(){ 
+			circle.setAttribute("stroke-dasharray", value + " 100");
+		}, 100);
 	});
 
 });

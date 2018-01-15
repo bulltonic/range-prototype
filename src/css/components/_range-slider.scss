@@ -1,8 +1,10 @@
 /*==============================================================
 # Range Slider
 ==============================================================*/
+
 .energy-rating-section {
 	background: $grayLight;
+	padding: 75px 0;
 }
 .rating-component {
 	width: 100%;
@@ -15,8 +17,43 @@
 	position: relative;
 }
 .range-content {
-	h3 {
+	h3,
+	.savings {
 		text-align: center;
+	}
+	h3, 
+	h5 {
+		font-weight: normal;
+	}
+	h5 {
+		font-size: 16px;
+		text-transform: uppercase;
+		margin: 10px 0 20px;
+	}
+	.home-value {
+		background: $white;
+		padding: 10px;
+	}
+	.value,
+	.value-amount {
+		color: $orange;
+	}
+	.savings {
+		float: left;
+		width: 100%;
+		background: $grayLight;
+		padding: 10px;
+		margin: 0 0 20px;
+		.home-value {
+			display: block;
+			float: left;
+			width: 50%;
+			background: $white;
+			border-right: 1px solid $grayLight;
+			&:last-child {
+				border-right: none;
+			}
+		}
 	}
 }
 .vertical-component {
@@ -133,14 +170,16 @@
 		position: absolute;
 		left: 150px;
 		top: 50%;
-		transform: translate(5%, -50%);
+		transform: translate3d(5%, -50%, 0);
 		background: white;
 		border: 1px solid $grayLight;
 		padding: 20px;
 		transition: .3s $cbTrans all;
+		z-index: 9;
 		&.active {
 			opacity: 1;
-			transform: translate(0%, -50%);
+			transform: translate3d(0%, -50%, 0);
+			z-index: 10;
 			&.disabled {
 				/*opacity: .8;*/
 			}
@@ -151,7 +190,7 @@
 			border-top: 0px solid $white;
 			border-left: 30px solid $white;
 			border-bottom: 30px solid transparent;
-			box-shadow: -1px -1px 0 1px $grayLight;
+			box-shadow: -1px -1px 0 -1px $grayLight;
 			position: absolute;
 			left: -15px;
 			top: 50%;
@@ -305,23 +344,12 @@
 			border-top: 30px solid $white;
 			border-right: 30px solid $white;
 			border-bottom: 0px solid $white;
-			box-shadow: -1px -1px 0 1px $grayLight;
+			box-shadow: -1px -1px 0 0px $grayLight;
 			position: absolute;
 			top: -15px;
 			left: 50%;
 			transform: translateX(-50%) rotate(45deg);
 		}
-	}
-}
-.savings {
-	float: left;
-	width: 100%;
-	border: 1px solid $grayLight;
-	padding: 5px;
-	.home-value {
-		display: block;
-		float: left;
-		width: 50%;
 	}
 }
 .rangeslider,
@@ -341,27 +369,26 @@
   position: relative;
   box-shadow: 0 0 0 5px white;
 }
-.disable-end-status {
-	.rangeslider--vertical {
-		&:before {
-			opacity: 0;
-		}
-	}
-	.rangeslider--horizontal {
-		&:after {
-			opacity: 0;
-		}
-	}
-}
+
 .rangeslider--horizontal {
 	&.disable-begin-status {
 		&:before {
 			opacity: 0;
 		}
+		.arrows {
+			&:before {
+				opacity: 0;
+			}
+		}
 	}
 	&.disable-end-status {
 		&:after {
 			opacity: 0;
+		}
+		.arrows {
+			&:after {
+				opacity: 0;
+			}
 		}
 	}
 }
@@ -370,10 +397,20 @@
 		&:after {
 			opacity: 0;
 		}
+		.arrows {
+			&:after {
+				opacity: 0;
+			}
+		}
 	}
 	&.disable-end-status {
 		&:before {
 			opacity: 0;
+		}
+		.arrows {
+			&:before {
+				opacity: 0;
+			}
 		}
 	}
 }
@@ -381,7 +418,7 @@
 	height: 80px;
 	min-width: 600px;
 	width: 100%;
-	background-image: linear-gradient(to right, #ee3624, #edb220, #aeca37);
+	background-image: linear-gradient(to right, $red, $orange, $green);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ee3624', endColorstr='#aeca37',GradientType=0 ); 
 	&:before,
 	&:after {
@@ -420,6 +457,7 @@
 			&:after,
 			&:before {
 			  top: 50%;
+			  transition: .3s $cbTrans all;
 			}
 			&:before {
 				left: -20px;
@@ -439,7 +477,7 @@
 	padding: 10px;
 	display: inline-block;
 	position: relative;
-	background-image: linear-gradient(to bottom, #ee3624, #edb220, #aeca37);
+	background-image: linear-gradient(to bottom, $red, $orange, $green);
   	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ee3624', endColorstr='#aeca37',GradientType=0 ); 
 	&:before,
 	&:after {
