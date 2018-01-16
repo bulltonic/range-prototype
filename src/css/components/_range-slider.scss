@@ -4,13 +4,13 @@
 
 .energy-rating-section {
 	background: $grayLight;
-	padding: 75px 0;
 }
 .rating-component {
 	width: 100%;
 	position: relative;
 	height: 100%;
 	float: left;
+	padding: 75px 0;
 }
 .range-input-content-wrapper {
 	float: left;
@@ -199,6 +199,7 @@
 	}
 }
 .horizontal-component {
+	display: none;
 	.range-input-content-wrapper { 
 		width: 100%;
 	}

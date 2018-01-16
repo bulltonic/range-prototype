@@ -250,7 +250,7 @@ $(document).ready(function(){
 	});
 
 	// ==============================================================*/
-	// Pie chart generation
+	// Chart generation
 	// ==============================================================*/
 
 
@@ -258,8 +258,7 @@ $(document).ready(function(){
 	    return document.createElementNS('http://www.w3.org/2000/svg', tag);
 	}
 
-
-	$('.pie').each(function(pie) {
+	$('.pie').each(function() {
 		$this = $(this);
 		var value = $this.data('chart-value');
 		var svg = createSvgEl('svg');
@@ -279,5 +278,85 @@ $(document).ready(function(){
 		}, 100);
 	});
 
+	$('.bar').each(function() {
+		$this = $(this);
+		var value = $this.data('chart-value');
+		var svg = createSvgEl('svg');
+		var rectangle = createSvgEl('rect');
+		var title = createSvgEl('title');
+		var cost = $this.find('.cost');
+		rectangle.setAttribute("height", "100%");
+		rectangle.setAttribute("width", "0");
+		// rectangle.setAttribute("cy", "16");
+		// svg.setAttribute("viewBox", "0 0 200 25");
+		// title.text(p);
+		svg.append(title);
+		svg.append(rectangle);
+		$this.append(svg);
+		// setTimeout(function(){ 
+		// 	rectangle.setAttribute("width", value+'%' );
+		// 	cost.css({'left': value+'%'});
+		// }, 100);
+	});
+
+	var watchers = $('.bar').map(function(i, element) {
+
+		var watcher = scrollMonitor.create( element );
+
+		watcher.lock();
+
+		if (watcher.isInViewport) {
+
+			$('.bar').each(function() {
+
+				$this = $(this);
+				var value = $this.data('chart-value');
+				var cost = $this.find('.cost');
+				var rectangle = $this.find('svg rect');
+				setTimeout(function(){
+					rectangle.attr({'width': value+'%'});
+					cost.css({'left': value+'%'});
+				}, 250);
+			});
+						
+		} else if (watcher.isBelowViewport) {
+
+			watcher.fullyEnterViewport(function() {
+
+				$('.bar').each(function() {
+					$this = $(this);
+					var value = $this.data('chart-value');
+					var cost = $this.find('.cost');
+					var rectangle = $this.find('svg rect');
+					setTimeout(function(){
+						rectangle.attr({'width': value+'%'});
+						cost.css({'left': value+'%'});
+					}, 250);
+				});
+
+			});
+
+			watcher.exitViewport(function() {
+
+				$('.bar').each(function() {
+					$this = $(this);
+					var value = $this.data('chart-value');
+					var cost = $this.find('.cost');
+					var rectangle = $this.find('svg rect');
+						rectangle.attr({'width': '0%'});
+						cost.css({'left': '0%'});
+				});
+
+			});
+
+		} 
+
+		return watcher;
+
+	});
+
+
 });
+
+
 //# sourceMappingURL=maps/scripts.js.map
